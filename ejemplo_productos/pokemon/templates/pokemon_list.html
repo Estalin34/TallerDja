@@ -16,6 +16,7 @@
                 <h5 class="card-title">{{ pokemon.title }}</h5>
                 <p class="card-text">{{ pokemon.description }}</p>
                 <a href="{% url 'pokemon_detail' pokemon.id %}" class="btn btn-warning text-white">Ver detalles</a>
+
             </div>
         </div>
     </div>
@@ -26,28 +27,29 @@
     {% endfor %}
 </div>
 
+
 <!-- Navegación de Paginación -->
 <nav aria-label="Page navigation">
     <ul class="pagination justify-content-center">
-        {% if page_number > 1 %}
+        {% if page_obj.has_previous %}
         <li class="page-item">
             <a class="page-link" href="?page=1">Primera</a>
         </li>
         <li class="page-item">
-            <a class="page-link" href="?page={{ page_number|add:-1 }}">Anterior</a>
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Anterior</a>
         </li>
         {% endif %}
 
         <li class="page-item active">
-            <span class="page-link">Página {{ page_number }} de {{ total_pages }}</span>
+            <span class="page-link">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
         </li>
 
-        {% if page_number < total_pages %}
+        {% if page_obj.has_next %}
         <li class="page-item">
-            <a class="page-link" href="?page={{ page_number|add:1 }}">Siguiente</a>
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Siguiente</a>
         </li>
         <li class="page-item">
-            <a class="page-link" href="?page={{ total_pages }}">Última</a>
+            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Última</a>
         </li>
         {% endif %}
     </ul>

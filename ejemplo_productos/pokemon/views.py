@@ -1,35 +1,23 @@
-from django.shortcuts import render, get_object_or_404
-from .services.pokemon_service import get_pokemons
 from django.core.paginator import Paginator
-
+from django.shortcuts import get_object_or_404, render
 from .models import Pokemon
 
-from django.shortcuts import render
-from .services.pokemon_service import get_pokemons
-
-from django.core.paginator import Paginator
-from django.shortcuts import render
-from .services.pokemon_service import get_pokemons
-from django.shortcuts import render
-from .services.pokemon_service import get_pokemons
 
 def pokemon_list(request):
     page = int(request.GET.get("page", 1))  # Obtiene la página actual, por defecto 1
     limit = 20  # Pokémon por página
 
-    data = get_pokemons(page, limit)
-    pokemons = data["pokemons"]
-    total_pokemons = data["total"]
-    total_pages = (total_pokemons // limit) + (1 if total_pokemons % limit else 0)
+    pokemons = Pokemon.objects.all()  # Obtiene todos los Pokémon de la base de datos
+    paginator = Paginator(pokemons, limit)
+    page_obj = paginator.get_page(page)
 
     return render(request, "pokemon_list.html", {
-        "page_obj": pokemons,
-        "page_number": page,
-        "total_pages": total_pages,
+        "page_obj": page_obj,
     })
 
 
 
-def pokemon_detail(request, id):
+def pokemon_detail(request, id):  # El parámetro debe llamarse "id"
     pokemon = get_object_or_404(Pokemon, id=id)
-    return render(request, "pokemon_detail.html", {"pokemon": pokemon})
+    return render(request, 'pokemon_detail.html', {'pokemon': pokemon})
+
