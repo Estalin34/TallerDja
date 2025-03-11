@@ -6,7 +6,7 @@
     <title>Lista de Pokémon</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        
+        /* Estilos generales */
         body {
             background-color: #f4f4f9;
             font-family: 'Arial', sans-serif;
@@ -16,13 +16,20 @@
         h1 {
             color: #2c3e50;
             margin-bottom: 20px;
+            font-weight: bold;
         }
 
+        .container {
+            max-width: 1200px;
+        }
+
+        /* Estilos de tarjetas */
         .card {
             border-radius: 15px;
             overflow: hidden;
             transition: transform 0.3s ease-in-out;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(135deg, #ffffff, #f8f9fa);
         }
 
         .card:hover {
@@ -31,66 +38,86 @@
         }
 
         .card-body {
-            background-color: #fff;
             padding: 20px;
-        }
-
-        .btn-warning {
-            background-color: #f39c12;
-            border-color: #f39c12;
-            text-transform: uppercase;
-            font-weight: bold;
-            border-radius: 30px;
-            padding: 10px 20px;
-        }
-
-        .btn-warning:hover {
-            background-color: #e67e22;
-            border-color: #e67e22;
-        }
-
-        .pagination {
-            font-size: 1.1rem;
-        }
-
-        .input-group {
-            max-width: 500px;
-            margin: 0 auto 30px;
+            text-align: center;
         }
 
         .pokemon-img {
-            height: 200px;
+            height: 180px;
             object-fit: contain;
             border-radius: 10px;
             transition: transform 0.3s ease;
         }
 
         .pokemon-img:hover {
-            transform: scale(1.05);
+            transform: scale(1.1);
         }
 
         .card-title {
-            font-size: 1.2rem;
-            color: #34495e;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #2c3e50;
         }
 
         .card-text {
             font-size: 1rem;
             color: #7f8c8d;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
-        
+        /* Botones */
+        .btn-custom {
+            width: 100%;
+            border-radius: 30px;
+            font-weight: bold;
+            padding: 10px 15px;
+            transition: background 0.3s ease;
+        }
+
+        .btn-warning {
+            background-color: #f39c12;
+            border: none;
+        }
+
+        .btn-warning:hover {
+            background-color: #e67e22;
+        }
+
+        .btn-danger {
+            background-color: #e74c3c;
+            border: none;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+
+        /* Barra de búsqueda */
+        .input-group {
+            max-width: 500px;
+            margin: 0 auto 30px;
+        }
+
+        /* Paginación */
+        .pagination {
+            font-size: 1.1rem;
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            .card-body {
-                padding: 15px;
+            .card {
+                margin-bottom: 20px;
             }
 
             .card-title {
                 font-size: 1.1rem;
             }
-        }
 
+            .btn-custom {
+                font-size: 0.9rem;
+                padding: 8px 12px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -98,27 +125,32 @@
     <div class="container my-4">
         <h1 class="text-center">Lista de Pokémon</h1>
 
-        <a href="{% url 'pokemon_create' %}" class="btn btn-primary">Crear Pokemon</a>
+        <div class="d-flex justify-content-between mb-3">
+            <a href="{% url 'pokemon_create' %}" class="btn btn-primary btn-custom">➕ Crear Pokémon</a>
+        </div>
 
+        <!-- Barra de búsqueda -->
         <form method="GET" action="" class="mb-4">
             <div class="input-group">
-                <input type="text" name="search" class="form-control" placeholder="Buscar Pokémon..." aria-label="Buscar Pokémon" value="{{ search }}">
+                <input type="text" name="search" class="form-control" placeholder="🔎 Buscar Pokémon..." aria-label="Buscar Pokémon" value="{{ search }}">
                 <button class="btn btn-warning text-white" type="submit">Buscar</button>
             </div>
         </form>
 
-        
+        <!-- Listado de Pokémon -->
         <div class="row">
             {% for pokemon in page_obj %}
             <div class="col-lg-3 col-md-4 col-sm-6 mb-4 d-flex justify-content-center">
                 <div class="card">
                     <img src="{{ pokemon.image }}" class="pokemon-img" alt="{{ pokemon.title }}">
-                    <div class="card-body text-center">
+                    <div class="card-body">
                         <h5 class="card-title">{{ pokemon.title }}</h5>
                         <p class="card-text">{{ pokemon.description }}</p>
-                        <a href="{% url 'pokemon_delete' pokemon.id %}" class="btn btn-danger">Eliminar</a>
-                        <a href="{% url 'pokemon_edit' pokemon.id %}" class="btn btn-warning">Editar</a>
-                        <a href="{% url 'pokemon_detail' pokemon.id %}" class="btn btn-warning text-white">Ver detalles</a>
+                        <div class="d-grid gap-2">
+                            <a href="{% url 'pokemon_detail' pokemon.id %}" class="btn btn-warning btn-custom text-white">🔍 Ver detalles</a>
+                            <a href="{% url 'pokemon_edit' pokemon.id %}" class="btn btn-warning btn-custom">✏️ Editar</a>
+                            <a href="{% url 'pokemon_delete' pokemon.id %}" class="btn btn-danger btn-custom">🗑️ Eliminar</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -129,15 +161,15 @@
             {% endfor %}
         </div>
 
-        
+        <!-- Paginación -->
         <nav aria-label="Page navigation">
             <ul class="pagination justify-content-center">
                 {% if page_obj.has_previous %}
                 <li class="page-item">
-                    <a class="page-link" href="?page=1">Primera</a>
+                    <a class="page-link" href="?page=1">« Primera</a>
                 </li>
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">‹ Anterior</a>
                 </li>
                 {% endif %}
 
@@ -147,10 +179,10 @@
 
                 {% if page_obj.has_next %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Siguiente ›</a>
                 </li>
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Última</a>
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Última »</a>
                 </li>
                 {% endif %}
             </ul>
