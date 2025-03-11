@@ -1,6 +1,19 @@
 from django.core.paginator import Paginator
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from .models import Pokemon
+from .forms import PokemonForm
+
+def pokemon_create(request):
+    if request.method == "POST":
+        form = PokemonForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("pokemon_list")
+    else:
+        form = PokemonForm()
+    return render(request, "pokemon_form.html", {"form": form})
+
+
 
 def pokemon_list(request):
     search_query = request.GET.get('search', '')  
@@ -23,4 +36,20 @@ def pokemon_list(request):
 def pokemon_detail(request, id):
     pokemon = get_object_or_404(Pokemon, id=id)
     return render(request, 'pokemon_detail.html', {'pokemon': pokemon})
+
+def pokemon_edit(request, id):
+    product = get_object_or_404(Pokemon, id=id)
+    if request.method == "POST":
+        form = PokemonForm(request.POST, instance=product)
+        if form.is_valid():
+            form.save()
+            return redirect("pokemon_list")
+    else:
+        form = PokemonForm(instance=product)
+    return render(request, "pokemon_form.html", {"form": form})
+
+def pokemon_delete(request, id):
+    product = get_object_or_404(Pokemon, id=id)
+    product.delete()
+    return redirect("pokemon_list")
 

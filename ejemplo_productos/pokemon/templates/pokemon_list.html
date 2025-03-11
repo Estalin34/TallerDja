@@ -98,7 +98,8 @@
     <div class="container my-4">
         <h1 class="text-center">Lista de Pokémon</h1>
 
-        
+        <a href="{% url 'pokemon_create' %}" class="btn btn-primary">Crear Pokemon</a>
+
         <form method="GET" action="" class="mb-4">
             <div class="input-group">
                 <input type="text" name="search" class="form-control" placeholder="Buscar Pokémon..." aria-label="Buscar Pokémon" value="{{ search }}">
@@ -115,6 +116,8 @@
                     <div class="card-body text-center">
                         <h5 class="card-title">{{ pokemon.title }}</h5>
                         <p class="card-text">{{ pokemon.description }}</p>
+                        <a href="{% url 'pokemon_delete' pokemon.id %}" class="btn btn-danger">Eliminar</a>
+                        <a href="{% url 'pokemon_edit' pokemon.id %}" class="btn btn-warning">Editar</a>
                         <a href="{% url 'pokemon_detail' pokemon.id %}" class="btn btn-warning text-white">Ver detalles</a>
                     </div>
                 </div>
