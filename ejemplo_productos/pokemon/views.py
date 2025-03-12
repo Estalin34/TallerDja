@@ -53,3 +53,7 @@ def pokemon_delete(request, id):
     product.delete()
     return redirect("pokemon_list")
 
+from django.shortcuts import render
+
+def home(request):
+    return render(request, "home.html")  # Asegúrate de que el archivo se llama home.html

@@ -7,4 +7,6 @@ urlpatterns = [
     path('create/', pokemon_create, name='pokemon_create'),
     path('edit/<int:id>/', pokemon_edit, name='pokemon_edit'),
     path('delete/<int:id>/', pokemon_delete, name='pokemon_delete'),
+
+    
 ]

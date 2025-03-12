@@ -123,19 +123,37 @@
 <body>
 
     <div class="container my-4">
-        <h1 class="text-center">Lista de Pokémon</h1>
-
-        <div class="d-flex justify-content-between mb-3">
-            <a href="{% url 'pokemon_create' %}" class="btn btn-primary btn-custom">➕ Crear Pokémon</a>
-        </div>
-
-        <!-- Barra de búsqueda -->
-        <form method="GET" action="" class="mb-4">
-            <div class="input-group">
-                <input type="text" name="search" class="form-control" placeholder="🔎 Buscar Pokémon..." aria-label="Buscar Pokémon" value="{{ search }}">
-                <button class="btn btn-warning text-white" type="submit">Buscar</button>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+            <a class="navbar-brand" href="#">Pokemon</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Pokemons
+                                    </a>
+                    <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{% url 'pokemon_create' %}">Creear Pokémon</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </ul>
+                <form class="d-flex" role="search">
+                    <input type="text" name="search" class="form-control" placeholder="🔎 Buscar Pokémon..." aria-label="Buscar Pokémon" value="{{ search }}">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
             </div>
-        </form>
+            </div>
+        </nav>
+        <h1 class="text-center">Lista de Pokémon</h1>
 
         <!-- Listado de Pokémon -->
         <div class="row">
