@@ -53,7 +53,25 @@ def pokemon_delete(request, id):
     product.delete()
     return redirect("pokemon_list")
 
-from django.shortcuts import render
 
-def home(request):
-    return render(request, "home.html")  # Asegúrate de que el archivo se llama home.html
+# views.py
+from django.shortcuts import render
+import requests
+
+CUSTOM_API_URL = "https://api-322828854570.us-central1.run.app/"  # Ajusta esta URL si es necesario
+
+def get_pokemon_cards():
+    """ Obtiene las cartas de Pokémon de la API personalizada. """
+    response = requests.get(CUSTOM_API_URL)
+    if response.status_code == 200:
+        return response.json().get('cards', [])  # Asegúrate de que estás obteniendo la lista de cartas
+    return []
+
+def pokemon_cards(request):
+    """ Vista para mostrar las cartas de Pokémon. """
+    cards = get_pokemon_cards()  # Obtiene las cartas de la API
+    return render(request, 'pokemon_apis.html', {'cards': cards})
+
+def pokemon_apis(request):
+    return redirect("pokemon_apis")
+
